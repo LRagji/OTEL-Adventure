@@ -55,3 +55,22 @@ services:
     depends_on:
       - otel
     command: sh -c "npm install --no-audit --no-fund && node --experimental-strip-types index.ts"
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - /data/redis:/data
+    command: [ "redis-server", "--save", "60", "1", "--loglevel", "warning" ]
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=appdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - /data/postgres:/var/lib/postgresql/data
