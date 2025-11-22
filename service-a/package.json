@@ -1,0 +1,30 @@
+{
+  "name": "service-a",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node --import ./instrumentation.ts --experimental-strip-types index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/auto-instrumentations-node": "^0.65.0",
+    "@opentelemetry/host-metrics": "^0.37.0",
+    "@opentelemetry/instrumentation": "^0.206.0",
+    "@opentelemetry/instrumentation-express": "^0.56.0",
+    "@opentelemetry/instrumentation-http": "^0.207.0",
+    "@opentelemetry/instrumentation-undici": "^0.18.0",
+    "@opentelemetry/sdk-metrics": "^2.2.0",
+    "@opentelemetry/sdk-node": "^0.206.0",
+    "@opentelemetry/sdk-trace-node": "^2.2.0",
+    "@opentelemetry/semantic-conventions": "^1.37.0",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.8.1",
+    "express": "^4.17.1"
+  }
+}

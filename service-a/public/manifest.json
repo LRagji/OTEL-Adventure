@@ -1,0 +1,12 @@
+{
+    "name": "Offline CSV Plotter",
+    "short_name": "CSV Plotter",
+    "description": "A simple PWA that downloads, caches, and plots CSV files offline.",
+    "start_url": "./app/index.html",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#1976d2",
+    "orientation": "any",
+    "scope": "./app/",
+    "icons": []
+}

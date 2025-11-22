@@ -1,0 +1,57 @@
+services:
+  otel:
+    image: grafana/otel-lgtm:latest
+    container_name: otel-lgtm
+    restart: unless-stopped
+    ports:
+      - "4317:4317" # OTLP gRPC
+      - "4318:4318" # OTLP HTTP
+      - "3000:3000" # LGTM UI
+    environment:
+      - LOG_LEVEL=info
+      - GF_AUTH_ANONYMOUS_ENABLED=false
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - ENABLE_LOGS_TEMPO=true
+    volumes:
+      - ./data/otel/:/data/
+      - ./config/tempo/config.yaml:/otel-lgtm/tempo-config.yaml
+
+  service-a:
+    image: node:22-alpine
+    container_name: ts-service-a
+    working_dir: /usr/src/app
+    volumes:
+      - ./service-a:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "3001:3000"
+      - "9229:9229"
+    environment:
+      - NODE_ENV=development
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel:4318
+      - OTEL_TRACES_EXPORTER=otlp
+      - OTEL_METRICS_EXPORTER=otlp
+      - OTEL_SERVICE_NAME=service-a
+    depends_on:
+      - otel
+    command: sh -c "npm install --no-audit --no-fund && node --import ./instrumentation.ts --experimental-strip-types index.ts"
+
+  service-b:
+    image: node:24-alpine
+    container_name: ts-service-b
+    working_dir: /usr/src/app
+    volumes:
+      - ./service-b:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "3002:3000"
+    environment:
+      - NODE_ENV=development
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel:4318
+      - OTEL_TRACES_EXPORTER=otlp
+      - OTEL_METRICS_EXPORTER=otlp
+      - OTEL_SERVICE_NAME=service-b
+    depends_on:
+      - otel
+    command: sh -c "npm install --no-audit --no-fund && node --experimental-strip-types index.ts"
