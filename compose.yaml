@@ -55,22 +55,51 @@ services:
     depends_on:
       - otel
     command: sh -c "npm install --no-audit --no-fund && node --experimental-strip-types index.ts"
-  redis:
-    image: redis:latest
-    container_name: redis
-    ports:
-      - "6379:6379"
-    volumes:
-      - /data/redis:/data
-    command: [ "redis-server", "--save", "60", "1", "--loglevel", "warning" ]
-  postgres:
+  db-1:
+    container_name: pg_container
     image: postgres:latest
-    container_name: postgres
+    restart: always
     environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=admin
-      - POSTGRES_DB=appdb
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
     ports:
       - "5432:5432"
     volumes:
-      - /data/postgres:/var/lib/postgresql/data
+      - ./data/pg/:/var/lib/postgresql/18/docker
+
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
+    volumes:
+      - ./data/pg-admin:/var/lib/pgadmin
+    depends_on:
+      - db-1
+
+  redis-1:
+    image: redis:latest
+    container_name: redis_container
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./data/redis:/data
+  # redisinsight:
+  #   image: redislabs/redisinsight:latest
+  #   container_name: redisinsight_container
+  #   ports:
+  #     - "8001:8001"
+  #   restart: always
+  #   depends_on:
+  #     - redis-1
+
+  # rmq:
+  #   image: rabbitmq:3-management
+  #   ports:
+  #     - 15673:15672
+  #     - 5672:5672
