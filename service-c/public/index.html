@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWA CSV Plot (IndexedDB)</title>
+    <link rel="manifest" href="manifest.json">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script src="idb.js"></script>
+    <script defer src="app.js"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            margin: 2em;
+        }
+
+        canvas {
+            max-width: 600px;
+            margin: auto;
+            display: block;
+        }
+
+        input,
+        button {
+            padding: 10px;
+            font-size: 16px;
+            margin: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>IndexedDB CSV Plot</h1>
+    <input id="filename" placeholder="Enter CSV (e.g. data1.csv)" />
+    <button id="run-btn">Run</button>
+    <canvas id="chart"></canvas>
+</body>
+
+</html>

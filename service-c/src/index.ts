@@ -63,7 +63,7 @@ async function start(): Promise<void> {
             console.error("Failed to start server", err);
             process.exit(1);
         }
-        console.log(`service-a listening on http://localhost:${port}`);
+        console.log(`service-c listening on http://localhost:${port}`);
     });
 
     // Graceful shutdown: ensure OpenTelemetry SDK flushes spans
