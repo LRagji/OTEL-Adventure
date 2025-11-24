@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node --import ./instrumentation.ts --experimental-strip-types index.ts",
+    "start": "node --loader=@opentelemetry/instrumentation/hook.mjs --import ./instrumentation.ts --experimental-strip-types index.ts",
     "update-deps": "npx npm-check-updates -u && npm install",
     "check-deps": "npx npm-check-updates"
   },
